@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiEinarbeitung.Views.PointOfSalePage"
+             Title="Point Of Sale"
+             xmlns:vm="clr-namespace:MauiEinarbeitung.ViewModels"
+             xmlns:dto="using:MauiEinarbeitung.ViewModels.Dto"
+             x:DataType="vm:PointOfSaleViewModel">
+    
+    <ContentPage.BindingContext>
+        <vm:PointOfSaleViewModel />
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+        <ScrollView>
+        <StackLayout>
+            
+            <Label Text="{Binding ConnectionStatus}"></Label>
+            <Label Text="{Binding TransactionStatus}"></Label>
+            <Label Text="{Binding ManagementStatus}"></Label>
+            <Label Text="{Binding SwUpdateAvailable}"></Label>
+            <Label Text="{Binding DisplayContent}"></Label>
+            <Label Text="{Binding CardReaderStatus}"></Label>
+            <Label Text="{Binding TransactionInformation.Aid}"></Label>
+            <Label Text="{Binding TransactionInformation.BrandName}"></Label>
+            <Label Text="{Binding TransactionInformation.CardExpiryDate}"></Label>
+            <Label Text="{Binding TransactionInformation.CardNumberPrintable}"></Label>
+            <Label Text="{Binding TransactionInformation.CardholderReceipt}"></Label>
+            <Label Text="{Binding TransactionInformation.MerchantReceipt}"></Label>
+            <Label Text="{Binding BalanceInformation.Receipt}"></Label>
+            <Label Text="{Binding BalanceInformation.Currency}"></Label>
+            <Label Text="{Binding BalanceInformation.TotalAmountSum}"></Label>
+            <CollectionView ItemsSource="{Binding BalanceInformation.Counters}" SelectionMode="Single">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="dto:Counters">
+                        <StackLayout Orientation="Vertical" Padding="10">
+                            <Label Text="{Binding Brand}" FontAttributes="Bold"/>
+                            <Label Text="{Binding TransactionCount}" FontAttributes="Bold"/>
+                            <Label Text="{Binding AmountSum}" FontAttributes="Bold"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        
+        <Button Command="{Binding ConnectWithTerminalCommand}" Text="Connect"></Button>
+        <Button Command="{Binding DisConnectWithTerminalCommand}" Text="Disconnect"></Button>
+        <Button Command="{Binding ActivateTerminalCommand}" Text="Activate"></Button>
+        <Button Command="{Binding DeactivateTerminalCommand}" Text="Deactivate"></Button>
+        <Button Command="{Binding BalanceCommand}" Text="Balance"></Button>
+        <Button Command="{Binding CreatePurchaseTransactionCommand}" Text="Purchase"></Button>
+        <Button Command="{Binding GetBrandsCommand}" Text="GetBrands"></Button>
+            
+            <CollectionView ItemsSource="{Binding Brands}" SelectionMode="Single" SelectedItem="{Binding SelectedBrand}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="dto:Brand">
+                        <StackLayout Orientation="Vertical" Padding="10">
+                            <Label Text="{Binding Name}" FontAttributes="Bold"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            
+            <StackLayout IsVisible="True">
+                <Label Text="Details" FontAttributes="Bold"/>
+                <Label FontAttributes="Italic"/>
+                <Label Text="Supported AIDs:"/>
+                <CollectionView ItemsSource="{Binding SelectedBrand.SupportedAids}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Label Text="{Binding .}"/>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <Label Text="Supported Currencies:"/>
+                <CollectionView ItemsSource="{Binding SelectedBrand.SupportedCurrencies}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Label Text="{Binding .}"/>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+            
+        </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
